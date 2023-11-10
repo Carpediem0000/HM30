@@ -15,7 +15,7 @@ public:
     void setPhoneNumber(string phoneNumber);
     void setAddress(string address);
 
-    string getLastName()const;
+    string getLastName()const override;
     string getPhoneNumber()const;
     string getAddress()const;
 

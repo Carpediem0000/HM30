@@ -33,9 +33,14 @@ string Colleague::getFax() const
     return fax;
 }
 
+string Colleague::getLastName() const
+{
+    return this->lastName;
+}
+
 void Colleague::print() const
 {
-    Persona::print;
+    Persona::print();
     cout << "Organization: " << org << endl;
     cout << "Fax: " << fax << endl;
 }

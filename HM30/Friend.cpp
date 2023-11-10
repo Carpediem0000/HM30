@@ -21,6 +21,11 @@ Date Friend::getBith() const
     return birth;
 }
 
+string Friend::getLastName() const
+{
+    return this->lastName;
+}
+
 void Friend::print() const
 {
     Persona::print();

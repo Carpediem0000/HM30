@@ -14,6 +14,7 @@ public:
 
     string getOrg()const;
     string getFax()const;
+    string getLastName()const override;
 
     void print() const override;
     virtual string type() const override;

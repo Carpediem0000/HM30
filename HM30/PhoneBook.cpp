@@ -21,10 +21,11 @@ void PhoneBook::addContact()
     int date;
     do
     {
-        Persona* persona = new Persona;
-        Colleague* colleague = new Colleague;
-        Friend* friendd = new Friend;
+        Persona* persona = nullptr;
+        Colleague* colleague = nullptr;
+        Friend* friendd = nullptr;
 
+        cout << "\tAdd contact menu\n";
         cout << "Select a group:\n";
         cout << "  1 - Persona\n";
         cout << "  2 - Colleague\n";
@@ -34,7 +35,8 @@ void PhoneBook::addContact()
 
         switch (menu)
         {
-        case 1:           
+        case 1:    
+            persona = new Persona;
             cout << "Enter last name: ";
             cin >> str;
             persona->setLastName(str); str.clear();
@@ -50,11 +52,9 @@ void PhoneBook::addContact()
             
             arr.push_back(persona);
             cout << "Contact add!\n";
-
-            delete colleague;
-            delete friendd;
             break;
         case 2:
+            colleague = new Colleague;
             cout << "Enter last name: ";
             cin >> str;
             colleague->setLastName(str); str.clear();
@@ -78,11 +78,9 @@ void PhoneBook::addContact()
             
             arr.push_back(colleague);
             cout << "Contact add!\n";
-
-            delete persona;
-            delete friendd;
             break;
         case 3:
+            friendd = new Friend;
             cout << "Enter last name: ";
             cin >> str;
             friendd->setLastName(str); str.clear();
@@ -108,11 +106,8 @@ void PhoneBook::addContact()
             dt.setYear(date);
             friendd->setBirth(dt);
             
-            arr.push_back(persona);
+            arr.push_back(friendd);
             cout << "Contact add!\n";
-
-            delete colleague;
-            delete persona;
             break;
         case 0:
             cout << "Good bye\n";
@@ -122,7 +117,7 @@ void PhoneBook::addContact()
             break;
         }
         system("cls");
-    } while (!menu);
+    } while (menu);
 }
 
 void PhoneBook::delContact(int ind)
@@ -131,6 +126,7 @@ void PhoneBook::delContact(int ind)
         delete arr[ind];
         arr.erase(arr.begin() + ind);
     }
+    else cout << "Contact not found :(\n";
 }
 
 void PhoneBook::editContact(int ind)
@@ -145,10 +141,11 @@ void PhoneBook::editContact(int ind)
         else cout << "Contact not found :(\n";
 
         if (arr[ind]->type() == "Persona"){
-            cout << "\tEdit contact\n";
+            cout << "\tEdit contact menu\n";
             cout << " 1 - Edit last name\n";
             cout << " 2 - Edit phone number\n";
             cout << " 3 - Edit Address\n";
+            cout << " 0 - Exit\n";
             cin >> menu;
 
             switch (menu)
@@ -178,7 +175,7 @@ void PhoneBook::editContact(int ind)
             }      
         }
         else if (arr[ind]->type() == "Colleague") {
-            cout << "\tEdit contact\n";
+            cout << "\tEdit contact menu\n";
             cout << " 1 - Edit last name\n";
             cout << " 2 - Edit phone number\n";
             cout << " 3 - Edit Address\n";
@@ -223,7 +220,7 @@ void PhoneBook::editContact(int ind)
             }
         }
         else {
-            cout << "\tEdit contact\n";
+            cout << "\tEdit contact menu\n";
             cout << " 1 - Edit last name\n";
             cout << " 2 - Edit phone number\n";
             cout << " 3 - Edit Address\n";
@@ -269,15 +266,134 @@ void PhoneBook::editContact(int ind)
             }
         }
         system("cls");
-    } while (!menu);
+    } while (menu);
 }
 
-void PhoneBook::searchContactsByType(const string& type) const
+void PhoneBook::searchContacts() const
 {
+    int menu = 0;
+    int sub_menu = 0;
+    string str;
+    bool in = false;
+    do
+    {
+        cout << "\tSearch menu\n";
+        cout << "1 - search by type\n";
+        cout << "2 - search by second name\n";
+        cin >> menu;
 
+        switch (menu)
+        {
+        case 1:
+            do
+            {
+                cout << "\tSearch by type\n";
+                cout << "Select a group:\n";
+                cout << "  1 - Persona\n";
+                cout << "  2 - Colleague\n";
+                cout << "  3 - Friend\n";
+                cout << "  0 - Exit\n";
+                cin >> sub_menu;
+
+                switch (sub_menu)
+                {
+                case 1:
+                    cout << "\tPersona\n";
+                    for (Contact* contact : arr)
+                    {
+                        if (contact->type() == "Persona")
+                        {
+                            ((Persona*)contact)->print();
+                        }
+                    }
+                    Sleep(5000);
+                    break;
+                case 2:
+                    cout << "\tColleague\n";
+                    for (Contact* contact : arr)
+                    {
+                        if (contact->type() == "Colleague")
+                        {
+                            ((Colleague*)contact)->print();
+                        }
+                    }
+                    Sleep(5000);
+                    break;
+                case 3:
+                    cout << "\tFriend\n";
+                    for (Contact* contact : arr)
+                    {
+                        if (contact->type() == "Friend")
+                        {
+                            ((Friend*)contact)->print();
+                        }
+                    }
+                    Sleep(5000);
+                    break;
+                case 0:
+                    cout << "Good bye\n";
+                    break;
+                default:
+                    cout << "Try again\n";
+                    break;
+                }
+            } while (!sub_menu);
+            break;
+        case 2:
+            cout << "\tSearch by second name\n";
+            cout << "Enter second name: ";
+            cin >> str;
+
+            for (Contact* contact : arr)
+            {
+                if ((*contact).getLastName() == str)
+                {
+                    in = true; break;
+                }
+            }
+
+            if (in)
+            {
+                for (Contact* contact : arr)
+                {
+                    if ((*contact).getLastName() == str)
+                    {
+                        contact->print();
+                    }
+                }
+            }
+            Sleep(5000);
+            break;
+        case 0:
+            cout << "Good bye\n";
+            break;
+        default:
+            cout << "Try again\n";
+            break;
+        }
+    } while (menu);
 }
 
 void PhoneBook::showContacts() const
 {
-
+    /*sort(arr.begin(), arr.end(),
+        [](const Contact* a, const Contact* b) {
+            return a->type() < b->type();
+        });*/
+    for (int i = 0; i < arr.size(); i++)
+    {
+        if (arr[i]->type() == "Persona")
+        {
+            cout << "#" << i << " Name: " << ((Persona*)arr[i])->getLastName() << " | Type: " << ((Persona*)arr[i])->type() << endl;
+        }
+        else if (arr[i]->type() == "Colleague")
+        {
+            cout << "#" << i << " Name: " << ((Colleague*)arr[i])->getLastName() << " | Type: " << ((Colleague*)arr[i])->type() << endl;
+        }
+        else
+        {
+            cout << "#" << i << " Name: " << ((Friend*)arr[i])->getLastName() << " | Type: " << ((Friend*)arr[i])->type() << endl;
+        }
+    }
+    Sleep(7000);
 }

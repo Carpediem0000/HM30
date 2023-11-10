@@ -1,6 +1,8 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <algorithm>
+#include <windows.h>
 #include "Contact.h"
 #include "Persona.h"
 #include "Colleague.h"
@@ -19,7 +21,7 @@ public:
 	void addContact();
 	void delContact(int ind);
 	void editContact(int ind);
-	void searchContactsByType(const string& type)const;
+	void searchContacts()const;
 
 	void showContacts()const;
 };
